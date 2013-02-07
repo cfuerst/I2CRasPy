@@ -1,0 +1,3 @@
+[submodule "app/lib/quick2wire-python-api"]
+	path = app/lib/quick2wire-python-api
+	url = git://github.com/quick2wire/quick2wire-python-api
