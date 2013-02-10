@@ -17,14 +17,9 @@ class ListenerBase(object):
 	@abc.abstractmethod
 	def transformState(self, raw):
 		return
-	@abc.abstractmethod		
-	def getAdress(self):
-		return
 		
 class ListenerLightBarrier(ListenerBase):
 	def act(self, state):
 		self.storageAdapter.persist(state)
 	def transformState(self, raw):
-		return 'state'
-	def getAdress(self):
-		return 'adress'
+		return raw
