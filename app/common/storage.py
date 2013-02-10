@@ -1,9 +1,10 @@
 import abc
+import sqlite3 as lite
 
 class StorageAdapterBase(object):
 	__metaclass__ = abc.ABCMeta
-	def __init__(self, config):
-		self.config = config
+	def __init__(self):
+		self.config = 'none'
 	@abc.abstractmethod
 	def persist(self, data):
 		return
@@ -22,8 +23,8 @@ class StorageAdapterSQLite(StorageAdapterBase):
 		self.db = db;
 	def persist(self, data):
 		if 'name' in data and 'event' in data:
-			return self.insertSensorRow(data['name'], data['event']);
-	def insertSensortRow(self, name, event):
+			self.insertSensorRow(data['name'], data['event']);
+	def insertSensorRow(self, name, event):
 		con = lite.connect(self.db)
 		cur = con.cursor()
 		cur.execute("INSERT INTO sensors (name, event) VALUES ('%s', '%s')" % (name, event))

@@ -21,13 +21,15 @@ class AddressReader(object):
 
 class AdressReaderADCPi(AddressReader):
 	def fetch(self, address):
-		#measure voltage at analog input 
+		#measure voltage at analog input
+		#@codesamples from http://www.andrewscheller.co.uk/
 		bus = i2c.I2CMaster(1)
-		h, l, r = bus.transaction(i2c.reading(address,3))[0]
+		bus.transaction(i2c.writing_bytes(address[0], address[1]))
+		time.sleep(0.05)
+		h, l, r = bus.transaction(i2c.reading(address[0],3))[0]
 		#shift left and bytewise or combination
 		t = (h << 8) | l
 		v = t * 0.000154
-		#return volatge
 		if v < 5.5:
 			return v
 		else:

@@ -1,4 +1,5 @@
 import abc
+from datetime import datetime
 
 class ListenerBase(object):
 	__metaclass__ = abc.ABCMeta
@@ -19,13 +20,25 @@ class ListenerBase(object):
 	def transformState(self, raw):
 		return
 		
-class ListenerLightBarrier(ListenerBase):
+class ListenerLightBarrierEntrance(ListenerBase):
+	lastEvent = 'wait'
+	currentState = 'vacant'
 	def act(self, data):
-		if data['event'] == 'detect'
-		for adapter in self.storageAdapters:
-			adapter.persist(data)
+		if 'event' in data:
+			for adapter in self.storageAdapters:
+				adapter.persist(data)
 	def transformState(self, raw):
-		state = 'wait'
+		event = 'wait'
+		data = {}		
 		if raw >= 1 and raw <= 6:
-			state = 'detect'
-		return {'name' : self.name, 'event' : state}
+			event = 'detect'
+		if event == 'detect' and self.lastEvent == 'wait': #avoid multidetection
+			if self.currentState == 'vacant':
+				self.currentState = 'busy'
+			else:
+				self.currentState = 'vacant'
+			data = {'name' : self.name, 'event' : self.currentState, 'ts' : str(datetime.now())}
+		self.lastEvent = event
+		return data
+	def setCurrentState(self, state):
+		self.currentState = state
