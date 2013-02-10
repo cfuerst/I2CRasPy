@@ -10,4 +10,4 @@ class StorageAdapterBase(object):
 
 class StorageAdapterStdout(StorageAdapterBase):
 	def persist(self, data):
-		print data
+		print(data)

@@ -1,4 +1,5 @@
 import time
+import abc
 import quick2wire.i2c as i2c
 
 class AddressReader(object):
@@ -7,7 +8,7 @@ class AddressReader(object):
 		self.listeners = listeners
 	def read(self):
 		for listener in self.listeners:
-			adress = listener.getAdress();
+			address = listener.getAddress();
 			output = self.fetch(address)
 			listener.listen(output)
 	def readLoop(self):
